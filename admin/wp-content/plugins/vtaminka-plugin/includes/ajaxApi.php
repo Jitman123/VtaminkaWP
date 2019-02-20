@@ -132,21 +132,21 @@ class ajaxApi implements interfaceApi{
 
     public static function getSingleProductAction(){
 
-        $id = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
+        $productID = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 
-        $thumb_id = get_post_thumbnail_id($id);
-        $image = wp_get_attachment_image_src($thumb_id,'full');//
-        $image = $image[0];
+        $imageID = get_post_thumbnail_id($productID);
+        $productImage = wp_get_attachment_image_src($imageID,'full');//
+        $productImage = $productImage[0];
 
-        $price = get_post_meta($id  , 'price' , true );
+        $productPrice = get_post_meta($productID  , 'price' , true );
 
-        $post = get_post( $id );
+        $post = get_post( $productID );
 
         $singleProduct=[
-            "ProductID"=>$id,
+            "ProductID"=>$productID,
             "ProductTitle"=>$post->post_title,
-            "ProductPrice"=>$price,
-            "ProductImage"=>$image,
+            "ProductPrice"=>$productPrice,
+            "ProductImage"=>$productImage,
             "ProductDescription"=>$post->post_content
         ];
 

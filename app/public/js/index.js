@@ -1185,6 +1185,11 @@ class CartService{
         this.http = $http;
         this.PASS= PASS;
 
+        let Total={
+            totalAmount: 0,
+            totalPrice:  0
+        };
+
     }//constructor
 
     getCart(){
@@ -1234,7 +1239,13 @@ class CartService{
                     'order': order,
                     'action': 'AddOrderAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
             if(response.data.code === 200){
@@ -1252,12 +1263,6 @@ class CartService{
     }
 
     total(){
-
-        let Total={
-            totalAmount: 0,
-            totalPrice:  0
-        };
-
 
         for(let i=0; i<this.cart.length; i++){
 
@@ -1315,7 +1320,13 @@ class CategoryService{
                 data:{
                     'action': 'getCategoriesAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
             let categories = response.data;
@@ -1342,7 +1353,13 @@ class CategoryService{
                     'nameCategory': name,
                     'action': 'getProductByCategoryAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
 
@@ -1483,7 +1500,13 @@ class ProductService{
                     'offset': offset || 0,
                     'action': 'getProductListAction'
                     },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
             let products = response.data.products;
@@ -1514,10 +1537,14 @@ class ProductService{
                     'id': productID,
                     'action': 'getSingleProductAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
-
-
 
             let product = response.data;
 

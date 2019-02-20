@@ -23,7 +23,13 @@ export default class CategoryService{
                 data:{
                     'action': 'getCategoriesAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
             let categories = response.data;
@@ -50,7 +56,13 @@ export default class CategoryService{
                     'nameCategory': name,
                     'action': 'getProductByCategoryAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
 

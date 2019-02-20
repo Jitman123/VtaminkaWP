@@ -17,6 +17,11 @@ export default class CartService{
         this.http = $http;
         this.PASS= PASS;
 
+        let Total={
+            totalAmount: 0,
+            totalPrice:  0
+        };
+
     }//constructor
 
     getCart(){
@@ -66,7 +71,13 @@ export default class CartService{
                     'order': order,
                     'action': 'AddOrderAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                }
             });
 
             if(response.data.code === 200){
@@ -84,12 +95,6 @@ export default class CartService{
     }
 
     total(){
-
-        let Total={
-            totalAmount: 0,
-            totalPrice:  0
-        };
-
 
         for(let i=0; i<this.cart.length; i++){
 
