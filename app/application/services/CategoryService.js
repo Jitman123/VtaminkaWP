@@ -1,6 +1,6 @@
 "use strict";
 
-export default class ProductService{
+export default class CategoryService{
 
     constructor(
         $http ,
@@ -12,7 +12,8 @@ export default class ProductService{
 
     }
 
-    async getProducts(limit, offset){
+
+    async getCategories(){
 
         try{
 
@@ -20,20 +21,14 @@ export default class ProductService{
                 method: 'POST',
                 url: this._PASS.WORDPRESS,
                 data:{
-                    'numberposts': limit || 10,
-                    'offset': offset || 0,
-                    'action': 'getProductListAction'
-                    },
+                    'action': 'getCategoriesAction',
+                },
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
 
-            let products = response.data.products;
+            let categories = response.data;
 
-            products.forEach( p => {
-                p.amount = 1;
-            } );
-
-            return products;
+            return categories;
 
         }//try
         catch( ex ){
@@ -42,9 +37,9 @@ export default class ProductService{
 
         }//catch
 
-    }//getProducts
+    }//getCategories
 
-    async getSingleProduct(productID){
+    async getCategoryProducts( name ) {
 
         try{
 
@@ -52,17 +47,20 @@ export default class ProductService{
                 method: 'POST',
                 url: this._PASS.WORDPRESS,
                 data:{
-                    'id': productID,
-                    'action': 'getSingleProductAction',
+                    'nameCategory': name,
+                    'action': 'getProductByCategoryAction',
                 },
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
 
 
+            let categories = {};
 
-            let product = response.data;
+            categories.products = response.data.products;
 
-            return  product;
+            categories.name = response.data.nameCategory;
+
+            return  categories;
 
         }//try
         catch( ex ){
@@ -71,6 +69,6 @@ export default class ProductService{
 
         }//catch
 
-    }//getSingleProduct
+    }//getCategoryProducts
 
-}
+}//CategoryService

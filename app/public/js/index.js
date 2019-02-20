@@ -123,12 +123,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_LocaleService__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./services/LocaleService */ "./application/services/LocaleService.js");
 /* harmony import */ var _services_ProductService__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./services/ProductService */ "./application/services/ProductService.js");
 /* harmony import */ var _services_CartService__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./services/CartService */ "./application/services/CartService.js");
-/* harmony import */ var _services_NewsService__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./services/NewsService */ "./application/services/NewsService.js");
-/* harmony import */ var _filters_DescriptionFilter__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./filters/DescriptionFilter */ "./application/filters/DescriptionFilter.js");
-/* harmony import */ var _directives_LangsOptionDirective__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./directives/LangsOptionDirective */ "./application/directives/LangsOptionDirective.js");
-/* harmony import */ var _directives_ProductDirective__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./directives/ProductDirective */ "./application/directives/ProductDirective.js");
-/* harmony import */ var _directives_SingleProductDirective__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./directives/SingleProductDirective */ "./application/directives/SingleProductDirective.js");
-/* harmony import */ var _directives_CartDirective__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./directives/CartDirective */ "./application/directives/CartDirective.js");
+/* harmony import */ var _services_CategoryService__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./services/CategoryService */ "./application/services/CategoryService.js");
+/* harmony import */ var _services_NewsService__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./services/NewsService */ "./application/services/NewsService.js");
+/* harmony import */ var _filters_DescriptionFilter__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./filters/DescriptionFilter */ "./application/filters/DescriptionFilter.js");
+/* harmony import */ var _directives_LangsOptionDirective__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./directives/LangsOptionDirective */ "./application/directives/LangsOptionDirective.js");
+/* harmony import */ var _directives_ProductDirective__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./directives/ProductDirective */ "./application/directives/ProductDirective.js");
+/* harmony import */ var _directives_SingleProductDirective__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./directives/SingleProductDirective */ "./application/directives/SingleProductDirective.js");
+/* harmony import */ var _directives_CartDirective__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./directives/CartDirective */ "./application/directives/CartDirective.js");
 
 
 //====================FUNCTIONS=============================//
@@ -154,6 +155,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 //====================SERVICES==============================//
+
 
 
 
@@ -185,7 +187,7 @@ angular.module('VtaminkaApplication.controllers')
 angular.module('VtaminkaApplication.constants')
     .constant('PASS' , {
         HOST: '/vtaminka/app/public/',
-        HOST_WP: '/vtaminka/admin/wp-admin/admin-ajax.php',
+        WORDPRESS: '/vtaminka/admin/wp-admin/admin-ajax.php',
         GET_NEWS : 'news/news-list.json',
         GET_LANGS: 'i18n/langs.json',
         GET_PRODUCTS :'products/products-list.json',
@@ -207,26 +209,29 @@ angular.module('VtaminkaApplication.services')
     .service( 'CartService' , [ 'localStorageService','$http','PASS', _services_CartService__WEBPACK_IMPORTED_MODULE_15__["default"] ]);
 
 angular.module('VtaminkaApplication.services')
-    .service('NewsService', ['$http', 'PASS', _services_NewsService__WEBPACK_IMPORTED_MODULE_16__["default"] ]);
+    .service( 'CategoryService' , [ '$http','PASS', _services_CategoryService__WEBPACK_IMPORTED_MODULE_16__["default"] ]);
+
+angular.module('VtaminkaApplication.services')
+    .service('NewsService', ['$http', 'PASS', _services_NewsService__WEBPACK_IMPORTED_MODULE_17__["default"] ]);
 
 //====================DIRECTIVES DECLARATIONS===================//
 angular.module('VtaminkaApplication.directives')
-    .directive('langsOptionDirective' , [ _directives_LangsOptionDirective__WEBPACK_IMPORTED_MODULE_18__["default"] ]);
+    .directive('langsOptionDirective' , [ _directives_LangsOptionDirective__WEBPACK_IMPORTED_MODULE_19__["default"] ]);
 
 angular.module('VtaminkaApplication.directives')
-    .directive('productDirective' , [ _directives_ProductDirective__WEBPACK_IMPORTED_MODULE_19__["default"] ]);
+    .directive('productDirective' , [ _directives_ProductDirective__WEBPACK_IMPORTED_MODULE_20__["default"] ]);
 
 angular.module('VtaminkaApplication.directives')
-    .directive('singleProductDirective' , [ _directives_SingleProductDirective__WEBPACK_IMPORTED_MODULE_20__["default"] ]);
+    .directive('singleProductDirective' , [ _directives_SingleProductDirective__WEBPACK_IMPORTED_MODULE_21__["default"] ]);
 
 angular.module('VtaminkaApplication.directives')
-    .directive('cartDirective' , [ _directives_CartDirective__WEBPACK_IMPORTED_MODULE_21__["default"] ]);
+    .directive('cartDirective' , [ _directives_CartDirective__WEBPACK_IMPORTED_MODULE_22__["default"] ]);
 
 
 
 //====================FILTERS DECLARATIONS===================//
 angular.module('VtaminkaApplication.filters')
-    .filter('DescriptionFilter', [_filters_DescriptionFilter__WEBPACK_IMPORTED_MODULE_17__["default"]]);
+    .filter('DescriptionFilter', [_filters_DescriptionFilter__WEBPACK_IMPORTED_MODULE_18__["default"]]);
 
 
 let app = angular.module('VtaminkaApplication',[
@@ -265,8 +270,6 @@ app.config( [
 
     $translateProvider.preferredLanguage('RU');
 
-       // $translateProvider.useLocalStorage();
-
     cfpLoadingBarProvider.includeSpinner = true;
     cfpLoadingBarProvider.includeBar = true;
 
@@ -289,7 +292,7 @@ app.config( [
             },
             "content": {
                 'templateUrl': "templates/home/home.html",
-                controller: [ '$scope' ,  'CartService' , 'products', 'news', 'ProductService' , function ($scope , CartService , products,news, ProductService){
+                controller: [ '$scope' ,  'CartService' , 'products', 'news', 'ProductService', function ($scope , CartService , products,news, ProductService){
 
                     ripplyScott.init('.button', 0.75);
 
@@ -314,11 +317,7 @@ app.config( [
 
                         $scope.offset += $scope.limit;
 
-
-
                         let moreProducts = await ProductService.getProducts( $scope.limit , $scope.offset );
-
-
 
                         moreProducts.forEach( p => {
 
@@ -338,11 +337,13 @@ app.config( [
                         if( moreProducts.length === 0 ) {
 
                             $scope.offset += $scope.products.length;
+
                         }//if
 
                     }//MoreProduct
 
                     $scope.news = news;
+
 
 
                 } ]
@@ -361,8 +362,8 @@ app.config( [
                 return LocaleService.getLangs();
             }  ],
 
-            'categories':['ProductService', function  ( ProductService){
-                return ProductService.getCategory();
+            'categories':['CategoryService', function  ( CategoryService){
+                return CategoryService.getCategories();
             }],
             'news': [ 'NewsService', function  ( NewsService ){
                 return NewsService.getNews()
@@ -409,12 +410,12 @@ app.config( [
                     return LocaleService.getLangs();
                 }  ],
 
-                'categories':['ProductService', function  ( ProductService){
-                    return ProductService.getCategory();
+                'categories':['CategoryService', function  ( CategoryService){
+                    return CategoryService.getCategories();
                 }],
 
-                'categoryProducts':['ProductService','$stateParams', function  ( ProductService, $stateParams){
-                    return ProductService.getCategoryProducts($stateParams.categoryID);
+                'categoryProducts':['CategoryService','$stateParams', function  ( CategoryService, $stateParams){
+                    return CategoryService.getCategoryProducts($stateParams.categoryID);
                 }]
 
             }
@@ -481,8 +482,8 @@ app.config( [
                 }  ],
 
 
-                'categories':['ProductService', function  ( ProductService){
-                    return ProductService.getCategory();
+                'categories':['CategoryService', function  ( CategoryService){
+                    return CategoryService.getCategories();
                 }],
 
                 'product':['ProductService','$stateParams', function  ( ProductService, $stateParams){
@@ -532,8 +533,8 @@ app.config( [
                     return LocaleService.getLangs();
                 }  ],
 
-                'categories':['ProductService', function  ( ProductService){
-                    return ProductService.getCategory();
+                'categories':['CategoryService', function  ( CategoryService){
+                    return CategoryService.getCategories();
                 }],
 
 
@@ -556,14 +557,9 @@ app.config( [
                 },
                 "content": {
                     'templateUrl': "templates/checkout/checkout.html",
-                    controller: [ '$scope' , 'PASS','$http', 'CartService', 'ProductService' ,   function ($scope , PASS, $http, CartService, ProductService ){
+                    controller: [ '$scope' , 'PASS','$http', 'CartService', 'ProductService' , 'CategoryService',   function ($scope , PASS, $http, CartService , CategoryService ){
 
                         $scope.cart = CartService.getCart();
-
-                        ProductService.getDelivery()
-                            .then(response=>{
-                                $scope.delivery = response
-                            });
 
                         $scope.order = {
 
@@ -614,6 +610,7 @@ app.config( [
                         $scope.regName=true;
                         $scope.regMail=true;
                         $scope.regPhone=true;
+
 
                         ripplyScott.init('.button', 0.75);
 
@@ -711,8 +708,8 @@ app.config( [
             'resolve': {
 
 
-                'categories':['ProductService', function  ( ProductService){
-                    return ProductService.getCategory();
+                'categories':['CategoryService', function  ( CategoryService){
+                    return CategoryService.getCategories();
                 }],
                 'langs': [ 'LocaleService' , function ( LocaleService ){
                     return LocaleService.getLangs();
@@ -727,7 +724,7 @@ app.config( [
         'views':{
             "header":{
                 "templateUrl": "templates/header.html",
-                controller: [ '$scope' , 'CartService' , 'langs' , 'ProductService', 'categories', function ($scope, CartService , langs, ProductService, categories ){
+                controller: [ '$scope' , 'CartService' , 'langs' , 'CategoryService', 'categories', function ($scope, CartService , langs, CategoryService , categories ){
                     $scope.langs = langs;
 
                     $scope.cart = CartService.getCart();
@@ -766,8 +763,8 @@ app.config( [
         'resolve': {
 
 
-            'categories':['ProductService', function  ( ProductService){
-                return ProductService.getCategory();
+            'categories':['CategoryService', function  ( CategoryService){
+                return CategoryService.getCategories();
             }],
 
             'langs': [ 'LocaleService' , function ( LocaleService ){
@@ -1018,7 +1015,7 @@ function ProductDirective( ){
             }
             
 
-            
+
         } ],
         link: function ( scope , element ){
 
@@ -1187,6 +1184,7 @@ class CartService{
         this.localStorageService=localStorageService;
         this.http = $http;
         this.PASS= PASS;
+
     }//constructor
 
     getCart(){
@@ -1208,6 +1206,7 @@ class CartService{
             cartNew.push(this._getSimpleProduct(cart[i]));
         }
         this.localStorageService.set( 'cartProduct' , cartNew );
+
     }//changeStorageService
 
     _getSimpleProduct(product){
@@ -1225,25 +1224,18 @@ class CartService{
 
 
     async addOrder( order){
+
         try{
 
             let response = await this.http({
                 method: 'POST',
-                url: this.PASS.HOST_WP,
+                url: this.PASS.WORDPRESS,
                 data:{
                     'order': order,
-                    'action': 'AddOrder',
+                    'action': 'AddOrderAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
-
-            console.log("RESPONSE ORDER", response.data);
 
             if(response.data.code === 200){
 
@@ -1285,6 +1277,93 @@ class CartService{
     };
 
 }
+
+/***/ }),
+
+/***/ "./application/services/CategoryService.js":
+/*!*************************************************!*\
+  !*** ./application/services/CategoryService.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CategoryService; });
+
+
+class CategoryService{
+
+    constructor(
+        $http ,
+        PASS
+    ){
+
+        this._$http = $http;
+        this._PASS = PASS;
+
+    }
+
+
+    async getCategories(){
+
+        try{
+
+            let response = await this._$http({
+                method: 'POST',
+                url: this._PASS.WORDPRESS,
+                data:{
+                    'action': 'getCategoriesAction',
+                },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+
+            let categories = response.data;
+
+            return categories;
+
+        }//try
+        catch( ex ){
+
+            console.log('EX: ' , ex);
+
+        }//catch
+
+    }//getCategories
+
+    async getCategoryProducts( name ) {
+
+        try{
+
+            let response = await this._$http({
+                method: 'POST',
+                url: this._PASS.WORDPRESS,
+                data:{
+                    'nameCategory': name,
+                    'action': 'getProductByCategoryAction',
+                },
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+
+
+            let categories = {};
+
+            categories.products = response.data.products;
+
+            categories.name = response.data.nameCategory;
+
+            return  categories;
+
+        }//try
+        catch( ex ){
+
+            console.log('EX: ' , ex);
+
+        }//catch
+
+    }//getCategoryProducts
+
+}//CategoryService
 
 /***/ }),
 
@@ -1384,7 +1463,7 @@ class ProductService{
 
     constructor(
         $http ,
-       PASS
+        PASS
     ){
 
         this._$http = $http;
@@ -1398,25 +1477,16 @@ class ProductService{
 
             let response = await this._$http({
                 method: 'POST',
-                url: this._PASS.HOST_WP,
+                url: this._PASS.WORDPRESS,
                 data:{
                     'numberposts': limit || 10,
                     'offset': offset || 0,
-                    'action': 'getProductList',
+                    'action': 'getProductListAction'
                     },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
 
-
             let products = response.data.products;
-
-            console.log('RESPONSE', response.data);
 
             products.forEach( p => {
                 p.amount = 1;
@@ -1431,80 +1501,7 @@ class ProductService{
 
         }//catch
 
-
-
-
     }//getProducts
-
-    async getCategory(){
-
-        try{
-
-            let response = await this._$http({
-                method: 'POST',
-                url: this._PASS.HOST_WP,
-                data:{
-                    'action': 'getCategories',
-                },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
-            });
-
-
-
-            let categories = response.data;
-
-            return categories;
-
-        }//try
-        catch( ex ){
-
-            console.log('EX: ' , ex);
-
-        }//catch
-    }//getCategory
-
-    async getCategoryProducts( name ) {
-
-        try{
-
-            let response = await this._$http({
-                method: 'POST',
-                url: this._PASS.HOST_WP,
-                data:{
-                    'nameCategory': name,
-                    'action': 'getProductByCategory',
-                },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
-            });
-
-
-            let categories = {};
-
-            categories.products = response.data.products;
-
-            categories.name = response.data.nameCategory
-            return  categories;
-
-        }//try
-        catch( ex ){
-
-            console.log('EX: ' , ex);
-
-        }//catch
-
-    }//getCategoryProducts
 
     async getSingleProduct(productID){
 
@@ -1512,25 +1509,17 @@ class ProductService{
 
             let response = await this._$http({
                 method: 'POST',
-                url: this._PASS.HOST_WP,
+                url: this._PASS.WORDPRESS,
                 data:{
                     'id': productID,
-                    'action': 'getSingleProduct',
+                    'action': 'getSingleProductAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
 
 
 
             let product = response.data;
-
-            console.log('RESPONSE sungle', response.data);
 
             return  product;
 
@@ -1543,40 +1532,6 @@ class ProductService{
 
     }//getSingleProduct
 
-    async getDelivery(){
-
-
-        try{
-
-            let response = await this._$http({
-                method: 'POST',
-                url: this._PASS.HOST_WP,
-                data:{
-                    'action': 'getDelivery',
-                },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
-            });
-
-
-
-            console.log("selivery", response.data);
-            let delivery = response.data;
-
-            return delivery;
-
-        }//try
-        catch( ex ){
-
-            console.log('EX: ' , ex);
-
-        }//catch
-    }
 }
 
 /***/ }),

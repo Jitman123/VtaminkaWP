@@ -42,12 +42,11 @@ $entity->addEntityFields(
 //ajaxApi::registerApiAction('deleteOrder');
 
 ajaxApi::registerApiAction('sendMessageToAdmin');
-ajaxApi::registerApiAction('getProductList');
-ajaxApi::registerApiAction('getCategories');
-ajaxApi::registerApiAction('getProductByCategory');
-ajaxApi::registerApiAction('getSingleProduct');
-ajaxApi::registerApiAction('getDelivery');
-ajaxApi::registerApiAction('AddOrder');
+ajaxApi::registerApiAction('getProductListAction');
+ajaxApi::registerApiAction('getCategoriesAction');
+ajaxApi::registerApiAction('getProductByCategoryAction');
+ajaxApi::registerApiAction('getSingleProductAction');
+ajaxApi::registerApiAction('AddOrderAction');
 
 
 add_action('admin_menu', 'CreateMyPluginMenu');
@@ -69,15 +68,6 @@ function MyPluginPageOptions(){
 
         <form method="post" action="options.php">
             <?php wp_nonce_field('update-options'); ?>
-
-            <table class="form-table">
-
-                <tr valign="top">
-                    <th scope="row">Доставка</th>
-                    <td><input type="text" style="width: 100%;" name="delivery" value="<?php echo get_option('delivery'); ?>" /></td>
-                </tr>
-
-            </table>
 
             <input type="hidden" name="action" value="update" />
             <input type="hidden" name="page_options" value="delivery" />

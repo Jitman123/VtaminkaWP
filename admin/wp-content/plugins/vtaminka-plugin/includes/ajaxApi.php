@@ -4,7 +4,222 @@ include 'Interface.api.php';
 include("class.mmOrders.php");
 
 class ajaxApi implements interfaceApi{
-    
+
+    public static function getProductListAction(){
+
+        $numberposts = filter_input(INPUT_POST,'numberposts',FILTER_SANITIZE_NUMBER_INT);
+
+        $offset = filter_input(INPUT_POST,'offset',FILTER_SANITIZE_NUMBER_INT);
+
+        $products = get_posts([
+            'numberposts' => $numberposts,
+            'post_type' => 'goods',
+            'offset'=> $offset
+
+        ]);
+
+        $productsArray = [];
+
+        foreach ($products as $product) :
+
+            $productID = $product->ID;
+
+            $productPrice = get_post_meta($product->ID, 'price', true );
+
+            $imageID = get_post_thumbnail_id($productID);
+            $image = wp_get_attachment_image_src($imageID,'full');//
+            $image = $image[0];
+
+            $productLink = get_permalink($product->ID);
+
+            $productsArray[]=[
+                "ProductID"=>$productID,
+                "ProductTitle"=>$product->post_title,
+                "ProductPrice"=>$productPrice,
+                "ProductImage"=>$image,
+                "link"=>$productLink
+            ];
+
+        endforeach;
+
+
+        self::echoDataWithHeader([
+                'header' => 'json',
+                'fields'=>[
+                    'products'=>$productsArray,
+                    '$offset'=>$offset,
+
+                ]
+            ]
+        );
+
+    }//getProductList
+
+    public static function getCategoriesAction(){
+
+        $categories = get_terms( 'vtaminkataxonomy' , [
+            'orderby'           => 'id',
+            'order'             => 'ASC',
+            'hide_empty'        => false,
+            'exclude'           => array(),
+            'exclude_tree'      => array(),
+            'include'           => array(),
+            'fields'            => 'all',
+            'hierarchical'      => false,
+            'childless'         => false
+        ] );
+
+        $categoriesArray = [];
+
+        foreach ($categories as $category) :
+
+            $categoryName = $category->name;
+            $categoriesArray[]= [
+                'term_id'=>$category->term_id,
+                'name'=>$categoryName
+            ];
+
+        endforeach;
+
+        self::echoDataWithHeader([
+                'fields'=>$categoriesArray
+            ]
+        );
+
+    }//getCategories
+
+    public static function getProductByCategoryAction(){
+
+        $nameCategory = filter_input(INPUT_POST,'nameCategory',FILTER_SANITIZE_STRING);
+
+        $productsByCategory = query_posts(array('vtaminkataxonomy' => $nameCategory, 'post_type' => 'goods'));
+
+        $productsNew = [];
+
+        foreach ($productsByCategory as $product) :
+
+
+            $productID = $product->ID;
+
+            $productPrice = get_post_meta($product->ID, 'price', true );
+
+            $imageID = get_post_thumbnail_id($productID);
+            $image = wp_get_attachment_image_src($imageID,'full');//
+            $image = $image[0];
+
+            $productLink = get_permalink($product->ID);
+
+            $productsArray[]=[
+                "ProductID"=>$productID,
+                "ProductTitle"=>$product->post_title,
+                "ProductPrice"=>$productPrice,
+                "ProductImage"=>$image,
+                "link"=>$productLink
+            ];
+
+        endforeach;
+
+        self::echoDataWithHeader([
+                'header' => 'json',
+                'fields'=>[
+                    'products'=>$productsNew,
+                    'nameCategory'=>$nameCategory,
+
+                ]
+            ]
+        );
+    }//getProductByCategory
+
+    public static function getSingleProductAction(){
+
+        $id = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
+
+        $thumb_id = get_post_thumbnail_id($id);
+        $image = wp_get_attachment_image_src($thumb_id,'full');//
+        $image = $image[0];
+
+        $price = get_post_meta($id  , 'price' , true );
+
+        $post = get_post( $id );
+
+        $singleProduct=[
+            "ProductID"=>$id,
+            "ProductTitle"=>$post->post_title,
+            "ProductPrice"=>$price,
+            "ProductImage"=>$image,
+            "ProductDescription"=>$post->post_content
+        ];
+
+        self::echoDataWithHeader([
+                'header' => 'json',
+                'fields'=> $singleProduct,
+
+            ]
+        );
+    }//getSingleProduct
+
+    public static function AddOrderAction(){
+
+        $order = filter_input(INPUT_POST,'order');
+
+        $order = json_decode($order);
+
+        $orderCheck = '';
+
+        foreach ($order->products as $product) :
+
+            $productID = $product->ProductID;
+            $productTitle = $product->ProductTitle;
+            $productPrice = $product->ProductPrice;
+            $productAmount = $product->amount;
+
+            $orderCheck .= "Product ID: " . $productID . "<br/>";
+            $orderCheck .= "Product Title: " . $productTitle . "<br/>";
+            $orderCheck .= "Product Price: " . $productPrice . "<br/>";
+            $orderCheck .= "Product Amount: " . $productAmount . "<br/>";
+
+        endforeach;
+
+        $postID = wp_insert_post([
+            'post_title' => $order->user->userName,
+            'post_content' => $orderCheck,
+            'post_type' => 'orders',
+            'post_status'   => 'publish',
+            'post_author'   => 1,
+        ]);
+
+        if( is_wp_error($postID) || $postID == 0 ){
+
+            self::echoDataWithHeader([
+                'fields' => [
+                    'message' => 'Создание не удалось',
+                    'error' => $postID,
+                    'code' => 500,
+                ]
+            ]);
+
+        }//if
+
+        update_post_meta( $postID , 'email' , $order->user->userEmail );
+        update_post_meta( $postID , 'phone' , $order->user->userPhone );
+        update_post_meta( $postID , 'address' , $order->user->userAdress );
+        update_post_meta( $postID , 'card' , $order->user->numberCard );
+        update_post_meta( $postID , 'cvv' , $order->user->cvvCard );
+        update_post_meta( $postID , 'month' , $order->user->monthCard );
+        update_post_meta( $postID , 'year' , $order->user->yearCard );
+
+        self::echoDataWithHeader([
+            'fields' => [
+                'message' => 'Создание удалось!',
+                'code' => 200,
+                '$scope.order' => $order
+            ]
+        ]);
+
+
+    }//AddOrder
+
+
     public static function echoDataWithHeader($data){
         
         header("Content-Type: application/json");
@@ -73,227 +288,6 @@ class ajaxApi implements interfaceApi{
         ]);
 
     }//sendMessageToAdmin
-
-    public static function getProductList(){
-
-        $numberposts = filter_input(INPUT_POST,'numberposts',FILTER_SANITIZE_NUMBER_INT);
-        $offset = filter_input(INPUT_POST,'offset',FILTER_SANITIZE_NUMBER_INT);
-
-        $products = get_posts([
-            'numberposts' => $numberposts,
-            'post_type' => 'goods',
-            'offset'=> $offset
-
-        ]);
-
-        $productsNew = [];
-
-        foreach ($products as $product) :
-            $price = get_post_meta($product->ID, 'price', true );
-            $id = $product->ID;
-
-            $thumb_id = get_post_thumbnail_id($id);
-            $image = wp_get_attachment_image_src($thumb_id,'full');//
-            $image = $image[0];
-
-            $link = get_permalink($product->ID);
-
-            $productsNew[]=[
-                    "ProductID"=>$id,
-                    "ProductTitle"=>$product->post_title,
-                    "ProductPrice"=>$price,
-                    "ProductImage"=>$image,
-                    "link"=>$link
-        ];
-
-        endforeach;
-
-
-        self::echoDataWithHeader([
-            'header' => 'json',
-            'fields'=>[
-                'products'=>$productsNew,
-                '$offset'=>$offset,
-
-            ]
-            ]
-        );
-
-    }//getProductList
-
-    public static function getSingleProduct(){
-
-        $id = filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
-
-
-        $thumb_id = get_post_thumbnail_id($id);
-        $image = wp_get_attachment_image_src($thumb_id,'full');//
-        $image = $image[0];
-
-        $price = get_post_meta($id  , 'price' , true );
-
-        $post = get_post( $id );
-
-        $singleProduct=[
-            "ProductID"=>$id,
-            "ProductTitle"=>$post->post_title,
-            "ProductPrice"=>$price,
-            "ProductImage"=>$image,
-            "ProductDescription"=>$post->post_content
-        ];
-
-        self::echoDataWithHeader([
-                'header' => 'json',
-                'fields'=> $singleProduct,
-
-            ]
-        );
-    }//getSingleProduct
-
-    public static function getDelivery(){
-
-        $delivery = get_option('delivery');
-
-        self::echoDataWithHeader([
-            'fields' =>  $delivery
-        ]);
-
-    }//getDelivery
-
-    public static function AddOrder(){
-
-        $order = filter_input(INPUT_POST,'order');
-
-        $order = json_decode($order);
-
-        $productString = '';
-        foreach ($order->products as $product) :
-
-            $productString .= 'ID' ." " .$product->ProductID ." ".'Название' ." ".$product->ProductTitle ." ".'Цена' ." ".$product->ProductPrice ." ".'Количество' ." ".$product->amount .'<br/>';
-
-
-        endforeach;
-
-        $postID = wp_insert_post([
-            'post_title' => $order->user->userName,
-            'post_content' => $productString,
-            'post_type' => 'orders',
-            'post_status'   => 'publish',
-            'post_author'   => 1,
-        ]);
-
-        if( is_wp_error($postID) || $postID == 0 ){
-
-            self::echoDataWithHeader([
-                'fields' => [
-                    'message' => 'Создание не удалось',
-                    'error' => $postID,
-                    'code' => 500,
-                ]
-            ]);
-
-        }//if
-
-        update_post_meta( $postID , 'email' , $order->user->userEmail );
-        update_post_meta( $postID , 'phone' , $order->user->userPhone );
-        update_post_meta( $postID , 'address' , $order->user->userAdress );
-        update_post_meta( $postID , 'card' , $order->user->numberCard );
-        update_post_meta( $postID , 'cvv' , $order->user->cvvCard );
-        update_post_meta( $postID , 'month' , $order->user->monthCard );
-        update_post_meta( $postID , 'year' , $order->user->yearCard );
-
-        self::echoDataWithHeader([
-            'fields' => [
-                'message' => 'Создание удалось!',
-                'code' => 200,
-                '$scope.order' => $order
-            ]
-        ]);
-
-
-    }//AddOrder
-
-    public static function getCategories(){
-
-        $categories = get_terms( 'vtaminkataxonomy' , [
-            'orderby'           => 'name',
-            'order'             => 'ASC',
-            'hide_empty'        => false,
-            'exclude'           => array(),
-            'exclude_tree'      => array(),
-            'include'           => array(),
-            'fields'            => 'all',
-            'slug'              => '',
-            'parent'            => null,
-            'hierarchical'      => false,
-            'childless'         => false,
-            'get'               => '',
-            'name__like'        => '',
-            'description__like' => '',
-            'pad_counts'        => false,
-            'offset'            => '',
-            'search'            => '',
-            'cache_domain'      => 'core'
-        ] );
-
-        $categoryList = [];
-
-        foreach ($categories as $category) :
-
-            $categoryName = $category->name;
-            $categoryList[]= [
-                'term_id'=>$category->term_id,
-                'name'=>$categoryName
-            ];
-
-         endforeach;
-
-
-        self::echoDataWithHeader([
-                'fields'=>$categoryList
-            ]
-        );
-    }//getCategories
-
-    public static function getProductByCategory(){
-
-        $nameCategory = filter_input(INPUT_POST,'nameCategory',FILTER_SANITIZE_STRING);
-
-
-        $products = query_posts(array('vtaminkataxonomy' => $nameCategory, 'post_type' => 'goods'));
-
-        $productsNew = [];
-
-        foreach ($products as $product) :
-            $price = get_post_meta($product->ID, 'price', true );
-            $id = $product->ID;
-
-            $thumb_id = get_post_thumbnail_id($id);
-            $image = wp_get_attachment_image_src($thumb_id,'full');//
-            $image = $image[0];
-
-            $link = get_permalink($product->ID);
-
-            $productsNew[]=[
-                "ProductID"=>$id,
-                "ProductTitle"=>$product->post_title,
-                "ProductPrice"=>$price,
-                "ProductImage"=>$image,
-                "link"=>$link
-            ];
-
-        endforeach;
-
-        self::echoDataWithHeader([
-                'header' => 'json',
-                'fields'=>[
-                    'products'=>$productsNew,
-                    'nameCategory'=>$nameCategory,
-
-                ]
-            ]
-        );
-    }//getProductByCategory
 
     public static function registerApiAction($action){
           
@@ -535,19 +529,6 @@ class ajaxApi implements interfaceApi{
         );
 
     }//getSingleCategory
-
-//    public static function getCategories($parent=null){
-//
-//
-//        $categories = self::getCategoriesR(null);
-//        self::echoDataWithHeader(
-//            array(
-//                'header' => 'json',
-//                'fields' => $categories
-//            )
-//        );
-//
-//    }
 
     public static function getSubCategories(){
         $parent = $_REQUEST['parent'];
@@ -1941,5 +1922,16 @@ P.S. "В сознании так сложилось, что вас трое - Л
         }//foreach
 
     }//importClients
+
+    public static function getCategories($parent=null){
+        $categories = self::getCategoriesR(null);
+        self::echoDataWithHeader(
+            array(
+                'header' => 'json',
+                'fields' => $categories
+            )
+        );
+
+    }
 
 }

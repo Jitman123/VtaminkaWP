@@ -16,6 +16,7 @@ export default class CartService{
         this.localStorageService=localStorageService;
         this.http = $http;
         this.PASS= PASS;
+
     }//constructor
 
     getCart(){
@@ -37,6 +38,7 @@ export default class CartService{
             cartNew.push(this._getSimpleProduct(cart[i]));
         }
         this.localStorageService.set( 'cartProduct' , cartNew );
+
     }//changeStorageService
 
     _getSimpleProduct(product){
@@ -54,25 +56,18 @@ export default class CartService{
 
 
     async addOrder( order){
+
         try{
 
             let response = await this.http({
                 method: 'POST',
-                url: this.PASS.HOST_WP,
+                url: this.PASS.WORDPRESS,
                 data:{
                     'order': order,
-                    'action': 'AddOrder',
+                    'action': 'AddOrderAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
-
-            console.log("RESPONSE ORDER", response.data);
 
             if(response.data.code === 200){
 
