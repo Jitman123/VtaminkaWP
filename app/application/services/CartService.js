@@ -17,11 +17,6 @@ export default class CartService{
         this.http = $http;
         this.PASS= PASS;
 
-        let Total={
-            totalAmount: 0,
-            totalPrice:  0
-        };
-
     }//constructor
 
     getCart(){
@@ -95,6 +90,12 @@ export default class CartService{
     }
 
     total(){
+
+        let Total={
+            totalAmount: 0,
+            totalPrice:  0
+        };
+
 
         for(let i=0; i<this.cart.length; i++){
 

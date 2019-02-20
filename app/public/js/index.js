@@ -614,39 +614,18 @@ app.config( [
 
                         ripplyScott.init('.button', 0.75);
 
-                        $scope.PromoClick = function  (){
+                        $scope.PromoClick = async function  (){
 
-                            let promos=[];
+                            let response = await CartService.GetPromo( $scope.order.promoCode );
 
-                            CartService.GetPromo()
-                                .then(response=>{
-                                        promos=response;
+                            console.log(response);
 
-                                    let index=-1;
-                                    for(let i=0; i<promos.length; i++){
-                                        if(promos[i]['code'] === $scope.promoCode) {
-                                            index = i;
-                                        }//if
-                                    }//for
+                            if( response.code === 200){
 
+                                $scope.discount = response.data;
+                                $scope.promoOk = true;
 
-                                    if(index!=-1){
-                                        $scope.promoOk=true;
-                                        $scope.Promo=promos[index];
-
-                                        $scope.Total = CartService.total();
-                                    }
-                                    else{
-                                        $scope.promoOk=false;
-                                    }
-
-                                    })
-                                .catch(error=>{
-                                    console.log(error);
-                                });
-
-
-
+                            }//if
                             
                         }//PromoClick
 
@@ -655,6 +634,7 @@ app.config( [
                             CartService.addOrder( JSON.stringify($scope.order));
 
                             $scope.cart = CartService.getCart();
+
                         };
                         
                         $scope.RegName = function  (){
@@ -1185,11 +1165,6 @@ class CartService{
         this.http = $http;
         this.PASS= PASS;
 
-        let Total={
-            totalAmount: 0,
-            totalPrice:  0
-        };
-
     }//constructor
 
     getCart(){
@@ -1263,6 +1238,12 @@ class CartService{
     }
 
     total(){
+
+        let Total={
+            totalAmount: 0,
+            totalPrice:  0
+        };
+
 
         for(let i=0; i<this.cart.length; i++){
 
