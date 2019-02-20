@@ -1,0 +1,42 @@
+{
+
+  "LAYOUT_MAIN_LINK": "Главная",
+  "LAYOUT_PRODUCTS_LINK": "Товары",
+  "LAYOUT_BLOG_LINK": "Блог",
+  "LAYOUT_ABOUT_LINK": "О компании",
+  "LAYOUT_CONTACTS_LINK": "Контакты",
+  "LAYOUT_CATEGORY_MAN_LINK": "Мужские",
+  "LAYOUT_CATEGORY_WOMAN_LINK": "Женские",
+  "LAYOUT_CATEGORY_CHILDREN_LINK": "Детские",
+  "LAYOUT_CATEGORY_SPORT_LINK": "Спортивные",
+  "LAYOUT_CATALOG_LINK": "Каталог",
+  "LAYOUT_MORE_LINK": "Еще",
+  "LAYOUT_NEWS_LINK": "Новости",
+  "LAYOUT_CONTACT_US_LINK": "Свяжитесь с нами",
+  "LAYOUT_YOU_NAME_LINK": "Ваше имя",
+  "LAYOUT_CONTACT_EMAIL_LINK": "Контактный email",
+  "LAYOUT_CONTACT_PHONE_LINK": "Контактный телефон",
+  "LAYOUT_SEND_LINK": "ОТПРАВИТЬ",
+  "LAYOUT_IN_BASKET": "УЖЕ В КОРЗИНЕ",
+  "LAYOUT_ADD_BASKET": "В КОРЗИНУ",
+  "LAYOUT_DESCRIPTION": "Описание",
+  "LAYOUT_COMPOSITION": "Состав",
+  "LAYOUT_INFO": "Информация о продукте",
+  "LAYOUT_CART": "Корзина",
+  "LAYOUT_CHECKOUT": "Офрмить заказ",
+  "LAYOUT_TOTAL": "Итого",
+  "LAYOUT_BASKET_EMPTY": "Корзина пустая",
+  "LAYOUT_PERSONAL_INFORMATION": "Персональные данные",
+  "LAYOUT_ORDER_CONTENT": "Содержание заказа",
+  "LAYOUT_ORDER_CONFIRM": "Подтвердить заказ",
+  "LAYOUT_INPUT_PROMO": "Введите промокод",
+  "LAYOUT_INCORRECT_PROMO": "Вы не ввели или указали неверный промокод",
+  "LAYOUT_DELIVERY": "Доставка",
+  "LAYOUT_INCORRECT_NAME": "*Имя должно начинатся с большой буквы и содержать буквы одного алфавита",
+  "LAYOUT_INCORRECT_MAIL": "*Введен некорректный email!",
+  "LAYOUT_INCORRECT_PHONE": "*Введен некорректный телефон!",
+  "LAYOUT_ADRESS": "Адресс доставки"
+
+
+
+}

@@ -1,0 +1,13 @@
+{
+  "ProductID": "7",
+  "ProductTitle": "Витамин 7",
+  "ProductPrice": "25",
+  "ProductImage": "images/vitamin1.jpg",
+  "ProductDescription":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sagittis erat sit amet enim auctor feugiat.  Aenean nec ultricies enim. Vestibulum ut viverra orci. Maecenas suscipit odio quis felis varius mollis.  Aenean nec ultricies enim. Vestibulum ut viverra orci. Maecenas suscipit odio quis felis varius mollis. Aenean nec ultricies enim.  Aenean nec ultricies enim. Vestibulum ut viverra orci. Maecenas suscipit odio quis felis varius mollis.  Aenean nec ultricies enim. Vestibulum ut viverra orci. Maecenas suscipit odio quis felis varius mollis. Vestibulum ut viverra orci. Maecenas suscipit odio quis felis varius mollis. Duis vitae mauris erat",
+  "ProductComposition":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sagittis erat sit amet enim auctor feugiat. Aenean nec ultricies enim. Vestibulum ut viverra orci. Maecenas suscipit odio quis felis varius mollis. Duis vitae mauris erat.",
+  "ProductInfoYear":"100г",
+  "ProductInfoSixMonth":"500г",
+  "ProductInfoContraindications":"нет",
+  "ProductInfoFact":"нет",
+  "ProductInfoAmountInBox":"50шт"
+}

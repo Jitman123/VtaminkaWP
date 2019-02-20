@@ -1,0 +1,60 @@
+<header class="headerTop ">
+    <div class="wrapper clearfix">
+        <div class="menuThin visible-sm-inline-block visible-xs-inline-block">
+            <a href="#" class="dropdown-toggle smallMenuA">T</a>
+        </div>
+
+        <div class="delimetersmall delimeter visible-sm-inline-block visible-xs-inline-block"></div>
+        <div class="lang">
+            <select
+                    id="langs"
+                    class="cs-select cs-skin-rotate"
+                    ng-model="currentLang"
+                    langs="langs"
+                    langs-option-directive
+            ></select>
+        </div>
+
+        <div class="delimeter"></div>
+        <div class="cart">
+            <a ui-sref="cart">
+                <span class="cartIcon">n</span>
+                <span class="cartCount" ng-bind="cart.length" ></span>
+            </a>
+        </div>
+        <div class="menu hidden-sm hidden-xs">
+            <nav class="topMenu cl-effect-2">
+                <a ui-sref="home" translate >LAYOUT_MAIN_LINK</a>
+                <a ui-sref="checkout" translate >LAYOUT_PRODUCTS_LINK</a>
+                <a href="blog.html" translate>LAYOUT_BLOG_LINK</a>
+                <a href="about_us.html" translate >LAYOUT_ABOUT_LINK</a>
+                <a ui-sref="contacts" translate >LAYOUT_CONTACTS_LINK</a>
+            </nav>
+        </div>
+
+    </div>
+</header>
+
+<header class="header ">
+    <div class="wrapper">
+        <div id='menuOpen' class="hidden menuThin visible-sm-inline-block visible-xs-inline-block">
+            <a href="#" class="dropdown-toggle smallMenuA" >T</a>
+        </div>
+        <div class="logo">
+            <a ui-sref="home"><img src="images/logo.png" alt=""></a>
+        </div>
+        <div class="cart">
+            <a ui-sref="cart">
+                <span class="cartIcon">n</span>
+                <span class="cartCount" ng-bind="cart.length"></span>
+            </a>
+        </div>
+        <div class="menu hidden-sm hidden-xs">
+            <nav class="mainMenu cl-effect-5" >
+                <a ui-sref="categoryProducts({'categoryID': category.name})" ng-repeat="category in categories"  ><span  data-hover="{{category.name}}" >{{category.name}}</span></a>
+
+            </nav>
+        </div>
+
+    </div>
+</header>

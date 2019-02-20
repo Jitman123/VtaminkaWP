@@ -1,0 +1,22 @@
+[
+  {
+    "NewID": "1",
+    "NewTitle": "Новость 1",
+    "NewImage": "images/year.jpg"
+  },
+  {
+    "NewID": "2",
+    "NewTitle": "Новость 2",
+    "NewImage": "images/year.jpg"
+  },
+  {
+    "NewID": "3",
+    "NewTitle": "Новость 3",
+    "NewImage": "images/year.jpg"
+  },
+  {
+    "NewID": "4",
+    "NewTitle": "Новость 4",
+    "NewImage": "images/year.jpg"
+  }
+]

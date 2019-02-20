@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html ng-app="VtaminkaApplication" lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <base href="/vtaminka/app/public/" >
+
+    <link rel="shortcut icon" href="images/logoSmall.png">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    <link rel="stylesheet" href="css/component.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="css/cs-select.css" />
+    <link rel="stylesheet" type="text/css" href="css/cs-skin-rotate.css" />
+    <link rel="stylesheet" type="text/css" href="css/snap.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.css" />
+    <!--<link rel="stylesheet" type="text/css" href="../node_modules/angular-material/angular-material.css" >-->
+
+
+    <script src="js/TweenMax.min.js"></script>
+    <script src="js/ripple-config.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/hover.js"></script>
+    <script src="js/snap.js"></script>
+    <script src="js/modernizr.custom.animate.js"></script>
+
+    <script src="js/selectFx.js"></script>
+
+    <link rel="stylesheet" href="css/app.css" >
+    <link rel="stylesheet" href="../node_modules/angular-loading-bar/src/loading-bar.css" >
+
+    <script src="js/index.js" ></script>
+    <script src="js/jquery.mCustomScrollbar.js"></script>
+
+    <script src="http://maps.google.com/maps/api/js?key=AIzaSyAFgM81Qz-SwfTzUsr4F51AgDj0HdN88CQ"></script>
+
+    <title>Vtaminka</title>
+
+</head>
+
+<body ng-controller="MainController" >
+
+    <div><span class="fa fa-spinner"></span></div>
+
+    <div class="snap-drawers">
+
+        <div class="snap-drawer snap-drawer-left">
+            <div class="side">
+                <h2>Меню</h2>
+                <ul>
+                    <li><a href="index.html" >Главная</a></li>
+                    <li><a href="products.html" >Товары</a></li>
+                    <li><a href="blog.html" >Блог</a></li>
+                    <li><a href="about_us.html" >О компании</a></li>
+                    <li><a ui-sref="contacts" >Контакты</a></li>
+                </ul>
+
+                <h2>Категории</h2>
+                <ul>
+                    <li><a href="index.html" >Мужские</a></li>
+                    <li><a href="products.html" >Женские</a></li>
+                    <li><a href="blog.html" >Детские</a></li>
+                    <li><a href="contacts.html" >Спортивные</a></li>
+                </ul>
+                <h2>Контакты</h2>
+                <p>email@Vtaminka.com</p>
+
+                <div class="socialSmall clearfix">
+                    <span class="social vk">E</span>
+                    <span class="social fb">B</span>
+                    <span class="social google">C</span>
+                    <span class="social tw">D</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="snap-content" style="">
+
+            <div ui-view="header"></div>
+
+            <section ui-view="content" > </section>
+
+            <div ui-view="footer"></div>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="js/toucheffects.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/imagesloaded.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/AnimOnScroll.js"></script>
+
+</body>
+</html>

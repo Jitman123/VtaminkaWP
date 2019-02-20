@@ -1,0 +1,22 @@
+[
+  {
+    "code": "AXPE",
+    "discount": "10",
+    "delivery": "120"
+  },
+  {
+    "code": "PLK",
+    "discount": "15",
+    "delivery": "189"
+  },
+  {
+    "code": "OL",
+    "discount": "0",
+    "delivery": "343"
+  },
+  {
+    "code": "DM",
+    "discount": "10",
+    "delivery": "565"
+  }
+]

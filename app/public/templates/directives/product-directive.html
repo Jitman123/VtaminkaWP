@@ -1,0 +1,32 @@
+<figure>
+    <div class="figurWrap">
+        <h3>
+            <a ui-sref="singleProduct({'productID': product.ProductID,'productAmount': product.amount})">
+                {{product.ProductTitle }} &mdash;
+                <span class="price" ng-bind-template="${{product.ProductPrice}}" ></span>
+            </a>
+        </h3>
+        <img ng-src="{{product.ProductImage}}">
+    </div>
+    <figcaption>
+        <div ng-show="!product.isInCart"  class="clearfix buttonBlock">
+
+            <select class="cs-select cs-skin-border">
+                <option value="1" disabled selected>1</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+
+            <button ng-click="AddProduct(product)" id="js-ripple-btn" class="button styl-material" translate>
+                LAYOUT_ADD_BASKET
+                <svg class="ripple-obj" id="js-ripple">
+                    <use height="100" width="100" xlink:href="#ripply-scott" class="js-ripple"></use>
+                </svg>
+            </button>
+        </div>
+        <div ng-show="product.isInCart" class="clearfix buttonBlock">
+            <div class="inCart" translate>LAYOUT_IN_BASKET</div>
+        </div>
+    </figcaption>
+
+</figure>
