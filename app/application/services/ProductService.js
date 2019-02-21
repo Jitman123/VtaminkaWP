@@ -24,13 +24,7 @@ export default class ProductService{
                     'offset': offset || 0,
                     'action': 'getProductListAction'
                     },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/json'}
             });
 
             let products = response.data.products;
@@ -61,13 +55,13 @@ export default class ProductService{
                     'id': productID,
                     'action': 'getSingleProductAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/json'},
+                // transformRequest: function(obj) {
+                //     var str = [];
+                //     for(var p in obj)
+                //         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                //     return str.join("&");
+                // }
             });
 
             let product = response.data;

@@ -90,14 +90,13 @@ class ajaxApi implements interfaceApi{
 
     public static function getProductByCategoryAction(){
 
-        $nameCategory = filter_input(INPUT_POST,'nameCategory',FILTER_SANITIZE_STRING);
+        $categoryName = filter_input(INPUT_POST,'nameCategory',FILTER_SANITIZE_STRING);
 
-        $productsByCategory = query_posts(array('vtaminkataxonomy' => $nameCategory, 'post_type' => 'goods'));
+        $productsByCategory = query_posts(array('vtaminkataxonomy' => $categoryName, 'post_type' => 'goods'));
 
-        $productsNew = [];
+        $foundProducts = [];
 
         foreach ($productsByCategory as $product) :
-
 
             $productID = $product->ID;
 
@@ -109,7 +108,7 @@ class ajaxApi implements interfaceApi{
 
             $productLink = get_permalink($product->ID);
 
-            $productsArray[]=[
+            $foundProducts[]=[
                 "ProductID"=>$productID,
                 "ProductTitle"=>$product->post_title,
                 "ProductPrice"=>$productPrice,
@@ -122,9 +121,8 @@ class ajaxApi implements interfaceApi{
         self::echoDataWithHeader([
                 'header' => 'json',
                 'fields'=>[
-                    'products'=>$productsNew,
-                    'nameCategory'=>$nameCategory,
-
+                    'products'=>$foundProducts,
+                    'categoryName'=>$categoryName,
                 ]
             ]
         );
@@ -192,7 +190,7 @@ class ajaxApi implements interfaceApi{
 
             self::echoDataWithHeader([
                 'fields' => [
-                    'message' => 'Создание не удалось',
+                    'message' => 'Creation error',
                     'error' => $postID,
                     'code' => 500,
                 ]
@@ -210,8 +208,6 @@ class ajaxApi implements interfaceApi{
 
         self::echoDataWithHeader([
             'fields' => [
-                'message' => 'Создание удалось!',
-                'code' => 200,
                 '$scope.order' => $order
             ]
         ]);

@@ -66,13 +66,7 @@ export default class CartService{
                     'order': order,
                     'action': 'AddOrderAction',
                 },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(obj) {
-                    var str = [];
-                    for(var p in obj)
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                    return str.join("&");
-                }
+                headers: {'Content-Type': 'application/json'}
             });
 
             if(response.data.code === 200){
